@@ -50,4 +50,22 @@ Posteriormente serão adicionadas funcionalidades como geração de um sudoku pa
 Popula a tabela de quadrado em quadrado, em contraste com método atual de linha a linha
 
 ###funcionamento sequencial(não funcional)
-Popular a tabela sequencialmente (inserir todos os '1', depois todos os '2', etc)
+Popular a tabela sequencialmente (inserir todos os '1', depois todos os '2', etc) <br/>
+Exemplo: <br/>
+1 5 2 |0 4 3 |6 0 7  <br/>
+
+3 0 4 |5 6 7 |2 0 1 <br/>
+
+7 6 0 |2 0 1 |4 3 5 <br/>
+____________________<br/>
+2 7 6 |4 3 0 |1 5 0 <br/>
+	
+0 4 3 |1 5 6 |7 2 0 <br/>
+	
+0 1 5 |7 0 2 |3 4 6 <br/>
+____________________<br/>
+4 0 1 |3 7 0 |5 6 2 <br/>
+	
+5 2 0 |6 1 4 |0 7 3 <br/>
+	
+6 3 7 |0 2 5 |0 1 4 <br/>
