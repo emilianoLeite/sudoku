@@ -1,5 +1,4 @@
 import random
-#print(random.randint(1, 9))
 
 sudoku = []
 
@@ -42,14 +41,18 @@ def check_square(row,column,number):
                   [7,6],[7,7],[7,8],
                   [8,6],[8,7],[8,8]]
 
-    for x in range(1,10):
+    for x in range(1,10): #varre as chaves do dicionário
         if square in squares[x]:
-            return x
-    return 0
+            for coordinate in squares[x]: #varre as coordenadas do quadrado
+                if(sudoku[coordinate[0]][coordinate[1]] == number):
+                    return False #o número já existe no quadrado
+            
+    return True #o número não existe no quadrado
         
 def possible(row,column,number):
-    
     #tentar modular em check_row, check_column e check_square
+    if(not check_square(row,column,number)):
+        return False
     for linha in range(0,9):
         if(linha==row):
             for coluna in range(0,9):
@@ -65,7 +68,7 @@ def insert(row,column,number):
         return True
     return False
 
-def run():
+def run(): #nao funciona se nao esta no main
     for x in range(0, 9):
         sudoku.append([])
         for y in range(0, 9):
@@ -81,7 +84,7 @@ def run():
             if(column==9):
                 for abc in sudoku:
                     for dhf in abc:
-                        print(dhf),
+                        print(dhf, end="")
                     print("\n")
                 row+=1
                 column=0
@@ -91,7 +94,7 @@ def run():
                 
     for row in sudoku:
         for column in row:
-            print(column),
+            print(column, end="")
         print("\n")
     
 if __name__ == '__main__':
@@ -106,11 +109,24 @@ if __name__ == '__main__':
     insert(3,8,1)#succeeds
     insert(7,3,2)#fails
     insert(0,6,9)#fails
-    print ("Square",check_square(0,0,9))#square 1
-    print ("Square",check_square(0,8,7))#square 3
-    print ("Square",check_square(3,8,1))#square 6
-    print ("Square",check_square(3,3,2))#square 5
+    
+    #verificando o quadrado inteiro, deve ser deletado depois
+    print ("Square",check_square(0,0,9))#False
+    print ("Square",check_square(0,1,9))#False
+    print ("Square",check_square(0,2,9))#False
+    print ("Square",check_square(1,0,9))#False
+    print ("Square",check_square(1,1,9))#False
+    print ("Square",check_square(1,2,9))#False
+    print ("Square",check_square(2,0,9))#False
+    print ("Square",check_square(2,1,9))#False
+    print ("Square",check_square(2,2,9))#False
+
+    print ("Square",check_square(6,8,1))#True
+    print ("Square",check_square(1,7,7))#False
+    print ("Square",check_square(3,0,2))#True
     for row in sudoku:
         for column in row:
             print(column, end="")
         print("\n")
+
+    
