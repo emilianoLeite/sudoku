@@ -68,7 +68,7 @@ def insert(row,column,number):
         return True
     return False
 
-def run(): #nao funciona se nao esta no main
+def createTable(): #nao funciona se nao esta no main
     for x in range(0, 9):
         sudoku.append([])
         for y in range(0, 9):
