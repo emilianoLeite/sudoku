@@ -45,3 +45,6 @@ Posteriormente serão adicionadas funcionalidades como geração de um sudoku pa
   1<br/>
   3<br/>
   A função trava aqui, pois o único valor restante para a linha é o 2, porém o quadrado 3 já possui um 2.
+
+###funcionamento alternativo(alternate_main.py)(não funcional)
+Popula a tabela de quadrado em quadrado, em contraste com método atual de linha a linha
