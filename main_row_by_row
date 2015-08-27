@@ -1,0 +1,67 @@
+import random
+
+sudoku = []
+
+def create_table():
+    currentMatrix = generate_rand_matrix()
+    
+    for i in range(9):
+        currentColumn = getColumn(currentMatrix)
+        #TODO: columnOk = verifyColumn(currentColumn)
+        #TODO: if columnOK: ...
+    for j in range(9):
+        #TODO: currentSquare = getSquare(currentMatrix)
+        #TODO: squareOk = verifySquare(currentSquare)
+        #TODO: if squareOK: ...
+
+def generate_rand_matrix():
+    matrix = [generate_rand_row(),generate_rand_row(),generate_rand_row(),generate_rand_row(),generate_rand_row(),generate_rand_row(),generate_rand_row(),generate_rand_row(),generate_rand_row()]
+    return matrix
+
+def print_matrix(matrix):
+    result = ""
+    for i in range(9):
+        for j in range(9):
+            result = result + str(matrix[i][j]) + " "
+        result = result + "\r\n"
+    return result
+
+def getRow(matrix,index):
+    return matrix[:][index]
+
+def getColumn(matrix,index):
+    return [row[index] for row in matrix]
+
+def generate_rand_row():
+    row = [1,2,3,4,5,6,7,8,9]
+    random.shuffle(row)
+    return row
+
+def print_row(row):
+    result = ""
+    for r in row:
+        result = result + str(r) + " "
+    return result
+
+    
+if __name__ == '__main__':
+    for x in range(0, 9):
+        sudoku.append([])
+        for y in range(0, 9):
+            sudoku[x].append(0)
+
+    
+    #verificando o quadrado inteiro, deve ser deletado depois
+    print ("Teste")
+
+    #Gera linha randomica
+    #print (print_row(generate_rand_row()))
+
+    #Gera matriz
+    #for i in range(9):
+    #    print (print_row(generate_rand_row()))
+
+    matrix = generate_rand_matrix()
+    print (print_matrix(matrix))
+    print (print_row(getRow(matrix,1)))
+    print (print_row(getColumn(matrix,1)))
