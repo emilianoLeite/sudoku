@@ -44,3 +44,4 @@ Posteriormente serão adicionadas funcionalidades como geração de um sudoku pa
   7<br/>
   1<br/>
   3<br/>
+  A função trava aqui, pois o único valor restante para a linha é o 2, porém o quadrado 3 já possui um 2.
