@@ -106,12 +106,11 @@ if __name__ == '__main__':
     insert(3,8,1)#succeeds
     insert(7,3,2)#fails
     insert(0,6,9)#fails
-    print "Square",check_square(0,0,9)#square 1
-    print "Square",check_square(0,8,7)#square 3
-    print "Square",check_square(3,8,1)#square 6
-    print "Square",check_square(3,3,2)#square 5
+    print ("Square",check_square(0,0,9))#square 1
+    print ("Square",check_square(0,8,7))#square 3
+    print ("Square",check_square(3,8,1))#square 6
+    print ("Square",check_square(3,3,2))#square 5
     for row in sudoku:
         for column in row:
-            print(column),
+            print(column, end="")
         print("\n")
-    
