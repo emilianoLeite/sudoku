@@ -48,3 +48,6 @@ Posteriormente serão adicionadas funcionalidades como geração de um sudoku pa
 
 ###funcionamento alternativo(alternate_main.py)(não funcional)
 Popula a tabela de quadrado em quadrado, em contraste com método atual de linha a linha
+
+###funcionamento sequencial(não funcional)
+Popular a tabela sequencialmente (inserir todos os '1', depois todos os '2', etc)
