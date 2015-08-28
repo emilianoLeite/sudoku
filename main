@@ -4,16 +4,20 @@ sudoku = []
 
 def create_table():
     currentMatrix = generate_init_matrix()
-   
+    currentMatrix = [list(i) for i in zip(*currentMatrix)]
+    random.shuffle(currentMatrix)
     #while verifyColumns(currentMatrix) == False:
     #    print(".")
     #currentMatrix = generate_init_matrix()
 
+    
+    
     while verifySquares(currentMatrix) == False:
         currentMatrix = generate_init_matrix()
-
-    #return currentMatrix
-    return [list(i) for i in zip(*currentMatrix)]
+        currentMatrix = [list(i) for i in zip(*currentMatrix)]
+        random.shuffle(currentMatrix)
+   
+    return currentMatrix
 
 #def generate_rand_matrix():
 #    matrix = [generate_rand_row(),generate_rand_row(),generate_rand_row(),generate_rand_row(),generate_rand_row(),generate_rand_row(),generate_rand_row(),generate_rand_row(),generate_rand_row()]
@@ -89,6 +93,11 @@ def getSquare(matrix,index):
         
 def getRow(matrix,index):
     return matrix[:][index]
+
+
+def setColumn(matrix,index):
+    #TODO
+    return
 
 def getColumn(matrix,index):
     return [row[index] for row in matrix]
