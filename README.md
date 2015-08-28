@@ -33,41 +33,24 @@ ____________________<br/>
   Quando acabar a linha, a função irá printar a tabela toda e começar a popular a próxima linha.
   
   Exemplo:<br/>
-  1 <br/>
-  7 <br/>
-  6 <br/>
-  3 <br/>
-  8 <br/>
-  5<br/>
-  9<br/>
-  2<br/>
-  4<br/>
-  176385924<br/>
+  1 7 6 |3 8 5 |9 2 4<br/>
   
-  000000000 <br/>
+  9 8 5 |4 6 7 |1 3 0 <br/>
   
-  000000000<br/>
+  0 0 0 |0 0 0 |0 0 0<br/>
+____________________<br/>  
+  0 0 0 |0 0 0 |0 0 0<br/>
   
-  000000000<br/>
+  0 0 0 |0 0 0 |0 0 0<br/>
   
-  000000000<br/>
+  0 0 0 |0 0 0 |0 0 0<br/>
+____________________<br/>  
+  0 0 0 |0 0 0 |0 0 0<br/>
   
-  000000000<br/>
+  0 0 0 |0 0 0 |0 0 0<br/>
   
-  000000000<br/>
+  0 0 0 |0 0 0 |0 0 0<br/>
   
-  000000000<br/>
-  
-  000000000<br/>
-  
-  9<br/>
-  8<br/>
-  5<br/>
-  4<br/>
-  6<br/>
-  7<br/>
-  1<br/>
-  3<br/>
   A função trava aqui, pois o único valor restante para a linha é o 2, porém o quadrado 3 já possui um 2.
   
 ###funcionamento quadrado(square_main.py)(não funcional)
