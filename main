@@ -12,7 +12,8 @@ def create_table():
     while verifySquares(currentMatrix) == False:
         currentMatrix = generate_init_matrix()
 
-    return currentMatrix
+    #return currentMatrix
+    return [list(i) for i in zip(*currentMatrix)]
 
 #def generate_rand_matrix():
 #    matrix = [generate_rand_row(),generate_rand_row(),generate_rand_row(),generate_rand_row(),generate_rand_row(),generate_rand_row(),generate_rand_row(),generate_rand_row(),generate_rand_row()]
@@ -23,7 +24,9 @@ def generate_init_matrix():
 
     random.shuffle(sorteador)
     
-    matrix = [get_init_row(sorteador[0]),get_init_row(sorteador[1]),get_init_row(sorteador[2]),get_init_row(sorteador[3]),get_init_row(sorteador[4]),get_init_row(sorteador[5]),get_init_row(sorteador[6]),get_init_row(sorteador[7]),get_init_row(sorteador[8])]
+    matrix = [get_init_row(sorteador[0]),get_init_row(sorteador[1]),get_init_row(sorteador[2]),
+              get_init_row(sorteador[3]),get_init_row(sorteador[4]),get_init_row(sorteador[5]),
+              get_init_row(sorteador[6]),get_init_row(sorteador[7]),get_init_row(sorteador[8])]
 
     return matrix
 
@@ -141,4 +144,3 @@ if __name__ == '__main__':
     
     print ("Iniciando geração do sudoku")   
     print (print_matrix(create_table()))
-
