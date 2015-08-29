@@ -13,6 +13,7 @@ def createTable():
     
     while verifySquares(currentMatrix) == False:
         currentMatrix = generate_init_matrix()
+        #transpoe matriz
         currentMatrix = [list(i) for i in zip(*currentMatrix)]
         random.shuffle(currentMatrix)
    
@@ -158,15 +159,14 @@ def createGame(matrix, difficulty):
     aux_matrix = copy.deepcopy(matrix)
     if (difficulty=='easy'):
         NUM = 18
-    else:
-        return NULL
-    """elif(difficulty=='medium'):
+    elif(difficulty=='medium'):
         NUM = 22
     elif(difficulty=='hard'):
-        NUM = 26"""
+        NUM = 26
+    else:
+        return NULL
 
-
-    for qtd in range(0,NUM):
+    for qtd in range(NUM):
         x = random.randint(0,8)
         y = random.randint(0,8)
         """while(not [x,y] in aux_matrix[qtd]):
@@ -174,8 +174,15 @@ def createGame(matrix, difficulty):
             y = random.randint(0,8)
             print('.')"""
         #aux_matrix.remove([x,y])
+        
+        #Para não repetir o local ja sorteado
+        while aux_matrix[x][y] == 0:
+            x = random.randint(0,8)
+            y = random.randint(0,8)
+
         aux_matrix[x][y] = 0
     return aux_matrix
+    
     
 if __name__ == '__main__':
     print ("Iniciando geração do sudoku")
@@ -183,4 +190,8 @@ if __name__ == '__main__':
     print (print_matrix(table))
     game = createGame(table,"easy")
     print(print_matrix(game))
+    #game = createGame(table,"medium")
+    #print(print_matrix(game))
+    #game = createGame(table,"hard")
+    #print(print_matrix(game))
     
