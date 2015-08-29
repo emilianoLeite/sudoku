@@ -1,6 +1,5 @@
 import random
-
-sudoku = []
+import copy
 
 def createTable():
     currentMatrix = generate_init_matrix()
@@ -115,7 +114,19 @@ def getColumn(matrix,index):
 #        numOfOcurrences = column.count(column[i])
 #        if numOfOcurrences > 1:
 #            return False
-#    return True
+#   return True
+
+def checkColumn(matrix, column, number):
+    for row in matrix:
+        if row[column] == number:
+            return False #number already in column
+    return True
+
+def checkRow(matrix, row, number):
+    for column in range(0,9):
+        if matrix[row][column] == number:
+            return False #number already in row
+    return True
 
 def verifySquares(matrix):
     for i in range(9):
@@ -167,5 +178,9 @@ def createGame(matrix, difficulty):
     return aux_matrix
     
 if __name__ == '__main__':
-    print ("Iniciando geração do sudoku")   
-    print (print_matrix(createTable()))
+    print ("Iniciando geração do sudoku")
+    table = createTable()
+    print (print_matrix(table))
+    game = createGame(table,"easy")
+    print(print_matrix(game))
+    
