@@ -1,6 +1,43 @@
 import random
 import copy
 
+squares = {}
+squares[1] = [[0,0],[0,1],[0,2],
+              [1,0],[1,1],[1,2],
+              [2,0],[2,1],[2,2]]
+
+squares[2] = [[0,3],[0,4],[0,5],
+              [1,3],[1,4],[1,5],
+              [2,3],[2,4],[2,5]]
+
+squares[3] = [[0,6],[0,7],[0,8],
+              [1,6],[1,7],[1,8],
+              [2,6],[2,7],[2,8]]
+
+squares[4] = [[3,0],[3,1],[3,2],
+              [4,0],[4,1],[4,2],
+              [5,0],[5,1],[5,2]]
+
+squares[5] = [[3,3],[3,4],[3,5],
+              [4,3],[4,4],[4,5],
+              [5,3],[5,4],[5,5]]
+
+squares[6] = [[3,6],[3,7],[3,8],
+              [4,6],[4,7],[4,8],
+              [5,6],[5,7],[5,8]]
+
+squares[7] = [[6,0],[6,1],[6,2],
+              [7,0],[7,1],[7,2],
+              [8,0],[8,1],[8,2]]
+
+squares[8] = [[6,3],[6,4],[6,5],
+              [7,3],[7,4],[7,5],
+              [8,3],[8,4],[8,5]]
+
+squares[9] = [[6,6],[6,7],[6,8],
+              [7,6],[7,7],[7,8],
+              [8,6],[8,7],[8,8]]
+
 def createTable():
     currentMatrix = generate_init_matrix()
     currentMatrix = [list(i) for i in zip(*currentMatrix)]
@@ -8,15 +45,11 @@ def createTable():
     #while verifyColumns(currentMatrix) == False:
     #    print(".")
     #currentMatrix = generate_init_matrix()
-
-    
-    
     while verifySquares(currentMatrix) == False:
         currentMatrix = generate_init_matrix()
         #transpoe matriz
         currentMatrix = [list(i) for i in zip(*currentMatrix)]
         random.shuffle(currentMatrix)
-   
     return currentMatrix
 
 #def generate_rand_matrix():
@@ -93,29 +126,13 @@ def getSquare(matrix,index):
         
 def getRow(matrix,index):
     return matrix[:][index]
-
-
+    
 def setColumn(matrix,index):
     #TODO
     return
 
 def getColumn(matrix,index):
     return [row[index] for row in matrix]
-
-#def verifyColumns(matrix):
-#    for i in range(9):
-#        currentColumn = getColumn(matrix,i)
-#        print (print_row(currentColumn))
-#        if verifyColumn(currentColumn) == False:
-#            return False
-#    return True
-
-#def verifyColumn(column):
-#    for i in range(9):
-#        numOfOcurrences = column.count(column[i])
-#        if numOfOcurrences > 1:
-#            return False
-#   return True
 
 def checkColumn(matrix, column, number):
     for row in matrix:
@@ -128,6 +145,16 @@ def checkRow(matrix, row, number):
         if matrix[row][column] == number:
             return False #number already in row
     return True
+
+def checkSquare(matrix,row,column,number):
+    square = [row,column]
+    for x in range(1,10): #varre as chaves do dicionário
+        if square in squares[x]:
+            for coordinate in squares[x]: #varre as coordenadas do quadrado
+                if(matrix[coordinate[0]][coordinate[1]] == number):
+                    return False #o número já existe no quadrado
+            
+    return True #o número não existe no quadrado
 
 def verifySquares(matrix):
     for i in range(9):
@@ -182,7 +209,43 @@ def createGame(matrix, difficulty):
 
         aux_matrix[x][y] = 0
     return aux_matrix
+
+def isInsertable(matrix, row, column, number):
+    if( not checkRow(matrix, row, number) ):
+        print("ROW")
+        return False
+    if( not checkColumn(matrix, column, number) ):
+        print("column")
+        return False
+    if( not checkSquare(matrix, row, column, number) ):
+        print("square")
+        return False
+    return True
+
+def basicCheck(game,coordinate):
+    insertNumber = 0
+    insertable = 0
+    for number in range(1,10):
+        if (isInsertable(game, coordinate[0], coordinate[1], number)):
+            insertNumber = number
+            insertable+=1
+    if (insertable == 1):
+        game[coordinate[0]][coordinate[1]] = insertNumber
+        return True
+    return False
     
+def solveGame(game):
+    coordinates =[]
+    for x in range(0,9):
+        for y in range(0,9):
+            if game[x][y] == 0:
+                coordinates.append( [x,y] )
+    print(coordinates)
+    while(coordinates): #while coordinates is not empty        
+        for coordinate in coordinates:
+            if(basicCheck(game,coordinate)):
+                coordinates.remove(coordinate)
+                break
     
 if __name__ == '__main__':
     print ("Iniciando geração do sudoku")
@@ -194,4 +257,3 @@ if __name__ == '__main__':
     #print(print_matrix(game))
     #game = createGame(table,"hard")
     #print(print_matrix(game))
-    
