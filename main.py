@@ -1,6 +1,7 @@
 import random
 import copy
 
+possibilities = {} #armazena todas as possibilidades de cada coordenada
 squares = {} #armazena todas as coordenadas para cada quadrado
 squares[0] = [[0,0],[0,1],[0,2],
               [1,0],[1,1],[1,2],
@@ -173,16 +174,45 @@ def basicCheck(game,row,column):
         game[row][column] = insertNumber
         return True
     return False
-               
+
+def duoCheck(game,row,column,possibilities):
+    
+    insertNumber = 0
+    insertableNumbers = 0
+    for number in range(1,10):
+        if (isInsertable(game, row, column, number)):
+            insertNumber = number
+            if str([row,column]) in possibilities:
+                possibilities[str( [row,column] )].append(number)
+            else:
+                possibilities[str( [row,column] )] = []
+            
+            """insertableNumbers+=1
+    if (insertableNumbers == 1):
+        game[row][column] = insertNumber
+        return True
+    return False"""
+
 def solveGame(game):
-    coordinates = getCoordinates(game,0)
+    
+    """coordinates = getCoordinates(game,0)
     #print(coordinates)
     while(coordinates): #while coordinates is not empty        
         for row,column in coordinates:
             if(basicCheck(game,row,column)):
                 coordinates.remove([row,column])
-                break                
+                break
+            if duoCheck(game,row,column,possibilities):
+                coordinates.remove([row,column])
+                break
+    return game"""
+    coordinates = getCoordinates(game,0)
+    for row,column in coordinates:
+        if duoCheck(game,row,column,possibilities):
+            coordinates.remove([row,column])
+            break
     return game
+    
 
 #Get an array of coordinates equal to 'number' inside array 'matrix'
 def getCoordinates(matrix,number):
@@ -197,7 +227,10 @@ if __name__ == '__main__':
     print ("Iniciando geração do sudoku")
     table = createTable()
     print (printMatrix(table))
-    game = createGame(table,"hard")
+    game = createGame(table,"easy")
+    #game = createGame(table,"medium")
+    #game = createGame(table,"hard")
     print(printMatrix(game))
     print("Solving game...")
     print (printMatrix(solveGame(game)))
+    print (possibilities)
