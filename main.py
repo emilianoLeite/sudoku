@@ -39,26 +39,27 @@ squares[9] = [[6,6],[6,7],[6,8],
               [8,6],[8,7],[8,8]]
 
 def createTable():
-    currentMatrix = generate_init_matrix()
+    currentMatrix = generateInitMatrix()
     currentMatrix = [list(i) for i in zip(*currentMatrix)]
     random.shuffle(currentMatrix)
     
-    while ( not(verifySquares(currentMatrix) ):
-        currentMatrix = generate_init_matrix()
+    while ( not(verifySquares(currentMatrix) ) ):
+        currentMatrix = generateInitMatrix()
         #transpõe matriz
         currentMatrix = [list(i) for i in zip(*currentMatrix)]
         random.shuffle(currentMatrix)
     return currentMatrix
 
-def generate_init_matrix():
+def generateInitMatrix():
     sorteador = [1,2,3,4,5,6,7,8,9]
     random.shuffle(sorteador)
 
+    matrix = []
     for i in range(0,9):
-            matrix.append( get_init_row(sorteador[i]) )
+            matrix.append( getInitRow(sorteador[i]) )
     return matrix
 
-def get_init_row(index):
+def getInitRow(index):
     row = {}
     row[1] = [1,2,3,4,5,6,7,8,9]
     row[2] = [2,3,4,5,6,7,8,9,1]
@@ -150,23 +151,17 @@ def printRow(row):
 def createGame(matrix, difficulty):
     aux_matrix = copy.deepcopy(matrix)
     if (difficulty=='easy'):
-        NUM = 22
-    elif(difficulty=='medium'):
-        NUM = 26
-    elif(difficulty=='hard'):
         NUM = 30
+    elif(difficulty=='medium'):
+        NUM = 36
+    elif(difficulty=='hard'):
+        NUM = 40
     else:
         return NULL
 
     for qtd in range(NUM):
         x = random.randint(0,8)
-        y = random.randint(0,8)
-        """while(not [x,y] in aux_matrix[qtd]):
-            x = random.randint(0,8)
-            y = random.randint(0,8)
-            print('.')"""
-        #aux_matrix.remove([x,y])
-        
+        y = random.randint(0,8)       
         #Para não repetir o local ja sorteado
         while aux_matrix[x][y] == 0:
             x = random.randint(0,8)
@@ -177,48 +172,51 @@ def createGame(matrix, difficulty):
 
 def isInsertable(matrix, row, column, number):
     if( not checkRow(matrix, row, number) ):
-        print("ROW")
+        #print("ROW")
         return False
     if( not checkColumn(matrix, column, number) ):
-        print("column")
+        #print("column")
         return False
     if( not checkSquare(matrix, row, column, number) ):
-        print("square")
+        #print("square")
         return False
     return True
 
 def basicCheck(game,coordinate):
     insertNumber = 0
-    insertable = 0
+    insertableNumbers = 0
     for number in range(1,10):
         if (isInsertable(game, coordinate[0], coordinate[1], number)):
             insertNumber = number
-            insertable+=1
-    if (insertable == 1):
+            insertableNumbers+=1
+    if (insertableNumbers == 1):
         game[coordinate[0]][coordinate[1]] = insertNumber
         return True
     return False
                
 def solveGame(game):
-    coordinates =[]
-    for x in range(0,9):
-        for y in range(0,9):
-            if game[x][y] == 0:
-                coordinates.append( [x,y] )
+    coordinates = getCoordinates(game,0)
     print(coordinates)
     while(coordinates): #while coordinates is not empty        
         for coordinate in coordinates:
             if(basicCheck(game,coordinate)):
                 coordinates.remove(coordinate)
-                break
-           
+                break                
+    return game
+
+#Get an array of coordinates equal to 'number' inside array 'matrix'
+def getCoordinates(matrix,number):
+    coordinates =[]
+    for x in range(0,9):
+        for y in range(0,9):
+            if game[x][y] == 0:
+                coordinates.append( [x,y] )
+    return coordinates
+
 if __name__ == '__main__':
     print ("Iniciando geração do sudoku")
     table = createTable()
-    print (print_matrix(table))
-    game = createGame(table,"easy")
-    print(print_matrix(game))
-    #game = createGame(table,"medium")
-    #print(print_matrix(game))
-    #game = createGame(table,"hard")
-    #print(print_matrix(game))
+    print (printMatrix(table))
+    game = createGame(table,"hard")
+    print(printMatrix(game))
+    print (printMatrix(solveGame(game)))
