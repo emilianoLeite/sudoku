@@ -1,6 +1,6 @@
 # sudoku
-O primeiro objetivo deste projeto é gerar uma matriz de sudoku completamente preenchida. [concluído]</br>
-Posteriormente serão adicionadas funcionalidades como geração de um sudoku para o jogador completar. [em andamento].
+O primeiro objetivo deste projeto é gerar uma matriz de sudoku completamente preenchida. [**concluído**]</br>
+Posteriormente serão adicionadas funcionalidades como geração de um sudoku para o jogador completar. [**em andamento**].
 
 ##funcionamento atual(main.py)
 ###Geração do jogo:
