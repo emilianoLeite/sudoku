@@ -1,7 +1,7 @@
 import random
 import copy
 
-squares = {}
+squares = {} #armazena todas as coordenadas para cada quadrado
 squares[1] = [[0,0],[0,1],[0,2],
               [1,0],[1,1],[1,2],
               [2,0],[2,1],[2,2]]
@@ -42,61 +42,36 @@ def createTable():
     currentMatrix = generate_init_matrix()
     currentMatrix = [list(i) for i in zip(*currentMatrix)]
     random.shuffle(currentMatrix)
-    #while verifyColumns(currentMatrix) == False:
-    #    print(".")
-    #currentMatrix = generate_init_matrix()
-    while verifySquares(currentMatrix) == False:
+    
+    while ( not(verifySquares(currentMatrix) ):
         currentMatrix = generate_init_matrix()
-        #transpoe matriz
+        #transpõe matriz
         currentMatrix = [list(i) for i in zip(*currentMatrix)]
         random.shuffle(currentMatrix)
     return currentMatrix
 
-#def generate_rand_matrix():
-#    matrix = [generate_rand_row(),generate_rand_row(),generate_rand_row(),generate_rand_row(),generate_rand_row(),generate_rand_row(),generate_rand_row(),generate_rand_row(),generate_rand_row()]
-#    return matrix
-
 def generate_init_matrix():
     sorteador = [1,2,3,4,5,6,7,8,9]
-
     random.shuffle(sorteador)
-    
-    matrix = [get_init_row(sorteador[0]),get_init_row(sorteador[1]),get_init_row(sorteador[2]),
-              get_init_row(sorteador[3]),get_init_row(sorteador[4]),get_init_row(sorteador[5]),
-              get_init_row(sorteador[6]),get_init_row(sorteador[7]),get_init_row(sorteador[8])]
 
+    for i in range(0,9):
+            matrix.append( get_init_row(sorteador[i]) )
     return matrix
 
 def get_init_row(index):
-    testeArray = [1,2,3,4,5,6,7,8,9]
-    testeArray2 = [2,3,4,5,6,7,8,9,1]
-    testeArray3 = [3,4,5,6,7,8,9,1,2]
-    testeArray4 = [4,5,6,7,8,9,1,2,3]
-    testeArray5 = [5,6,7,8,9,1,2,3,4]
-    testeArray6 = [6,7,8,9,1,2,3,4,5]
-    testeArray7 = [7,8,9,1,2,3,4,5,6]
-    testeArray8 = [8,9,1,2,3,4,5,6,7]
-    testeArray9 = [9,1,2,3,4,5,6,7,8]
-    if index == 1:
-        return testeArray
-    if index == 2:
-        return testeArray2
-    if index == 3:
-       return testeArray3
-    if index == 4:
-        return testeArray4
-    if index == 5:
-        return testeArray5
-    if index == 6:
-        return testeArray6
-    if index == 7:
-        return testeArray7
-    if index == 8:
-        return testeArray8
-    if index == 9:
-        return testeArray9
+    row = {}
+    row[1] = [1,2,3,4,5,6,7,8,9]
+    row[2] = [2,3,4,5,6,7,8,9,1]
+    row[3] = [3,4,5,6,7,8,9,1,2]
+    row[4] = [4,5,6,7,8,9,1,2,3]
+    row[5] = [5,6,7,8,9,1,2,3,4]
+    row[6] = [6,7,8,9,1,2,3,4,5]
+    row[7] = [7,8,9,1,2,3,4,5,6]
+    row[8] = [8,9,1,2,3,4,5,6,7]
+    row[9] = [9,1,2,3,4,5,6,7,8]
+    return row[index]
 
-def print_matrix(matrix):
+def printMatrix(matrix):
     result = ""
     for i in range(9):
         for j in range(9):
@@ -126,10 +101,6 @@ def getSquare(matrix,index):
         
 def getRow(matrix,index):
     return matrix[:][index]
-    
-def setColumn(matrix,index):
-    #TODO
-    return
 
 def getColumn(matrix,index):
     return [row[index] for row in matrix]
@@ -137,13 +108,13 @@ def getColumn(matrix,index):
 def checkColumn(matrix, column, number):
     for row in matrix:
         if row[column] == number:
-            return False #number already in column
+            return False #já existe número na already na coluna
     return True
 
 def checkRow(matrix, row, number):
     for column in range(0,9):
         if matrix[row][column] == number:
-            return False #number already in row
+            return False #já existe número na linha
     return True
 
 def checkSquare(matrix,row,column,number):
@@ -159,7 +130,6 @@ def checkSquare(matrix,row,column,number):
 def verifySquares(matrix):
     for i in range(9):
         currentSquare = getSquare(matrix,i)
-        
         if verifySquare(currentSquare) == False:
             return False
     return True
@@ -169,14 +139,9 @@ def verifySquare(square):
         numOfOcurrences = square.count(square[i])
         if numOfOcurrences > 1:
             return False
-    return True   
+    return True
 
-#def generate_rand_row():
-#    row = [1,2,3,4,5,6,7,8,9]
-#    random.shuffle(row)
-#    return row
-
-def print_row(row):
+def printRow(row):
     result = ""
     for r in row:
         result = result + str(r) + " "
@@ -185,11 +150,11 @@ def print_row(row):
 def createGame(matrix, difficulty):
     aux_matrix = copy.deepcopy(matrix)
     if (difficulty=='easy'):
-        NUM = 18
-    elif(difficulty=='medium'):
         NUM = 22
-    elif(difficulty=='hard'):
+    elif(difficulty=='medium'):
         NUM = 26
+    elif(difficulty=='hard'):
+        NUM = 30
     else:
         return NULL
 
@@ -233,7 +198,7 @@ def basicCheck(game,coordinate):
         game[coordinate[0]][coordinate[1]] = insertNumber
         return True
     return False
-    
+               
 def solveGame(game):
     coordinates =[]
     for x in range(0,9):
@@ -246,7 +211,7 @@ def solveGame(game):
             if(basicCheck(game,coordinate)):
                 coordinates.remove(coordinate)
                 break
-    
+           
 if __name__ == '__main__':
     print ("Iniciando geração do sudoku")
     table = createTable()
