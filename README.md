@@ -1,4 +1,4 @@
-# Sudoku
+﻿# Sudoku do Emiliano. "Vou deixar um comentário aqui para não atrapalhar muita coisa" by Fabio.
 O primeiro objetivo deste projeto é gerar uma matriz de sudoku completamente preenchida. [**concluído**]</br>
 Posteriormente serão adicionadas funcionalidades como geração de um sudoku para o jogador completar. [**em andamento**].
 
