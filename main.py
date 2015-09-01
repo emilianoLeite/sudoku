@@ -1,4 +1,4 @@
-﻿import random
+import random
 import copy
 
 squares = {} #armazena todas as coordenadas para cada quadrado
@@ -133,25 +133,28 @@ def printRow(row):
     return result
 
 def createGame(matrix, difficulty):
-    aux_matrix = copy.deepcopy(matrix)
-    if (difficulty=='easy'):
-        NUM = 30
-    elif(difficulty=='medium'):
-        NUM = 36
-    elif(difficulty=='hard'):
-        NUM = 40
-    else:
-        return NULL
- 
-    for qtd in range(NUM):
-        x = random.randint(0,8)
-        y = random.randint(0,8)       
-        #Para não repetir o local ja sorteado
-        while aux_matrix[x][y] == 0:
+    while True:
+        aux_matrix = copy.deepcopy(matrix)
+        if (difficulty=='easy'):
+            NUM = 30
+        elif(difficulty=='medium'):
+            NUM = 36
+        elif(difficulty=='hard'):
+            NUM = 40
+        else:
+            return NULL
+     
+        for qtd in range(NUM):
             x = random.randint(0,8)
-            y = random.randint(0,8) 
-        aux_matrix[x][y] = 0
-    return aux_matrix
+            y = random.randint(0,8)       
+            #Para não repetir o local ja sorteado
+            while aux_matrix[x][y] == 0:
+                x = random.randint(0,8)
+                y = random.randint(0,8) 
+            aux_matrix[x][y] = 0
+        #if isSolvable(game): #uncomment later when all solveGame logic is implemented
+            #return aux_matrix
+        return aux_matrix #remove when lines above are uncommented
 
 def isInsertable(matrix, row, column, number):
     if( not checkRow(matrix, row, number) ):
@@ -183,6 +186,9 @@ def solveGame(game):
                 coordinates.remove([row,column])
                 break                
     return game
+
+def isSolvable(game):
+    return solveGame(game)
 
 #Get an array of coordinates equal to 'number' inside array 'matrix'
 def getCoordinates(matrix,number):
