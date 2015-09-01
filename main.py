@@ -3,41 +3,41 @@ import copy
 
 possibilities = {} #armazena todas as possibilidades de cada coordenada
 squares = {} #armazena todas as coordenadas para cada quadrado
-squares[0] = [[0,0],[0,1],[0,2],
-              [1,0],[1,1],[1,2],
-              [2,0],[2,1],[2,2]]
+squares[0] = [(0,0),(0,1),(0,2),
+              (1,0),(1,1),(1,2),
+              (2,0),(2,1),(2,2)]
 
-squares[1] = [[0,3],[0,4],[0,5],
-              [1,3],[1,4],[1,5],
-              [2,3],[2,4],[2,5]]
-
-squares[2] = [[0,6],[0,7],[0,8],
-              [1,6],[1,7],[1,8],
-              [2,6],[2,7],[2,8]]
-
-squares[3] = [[3,0],[3,1],[3,2],
-              [4,0],[4,1],[4,2],
-              [5,0],[5,1],[5,2]]
-
-squares[4] = [[3,3],[3,4],[3,5],
-              [4,3],[4,4],[4,5],
-              [5,3],[5,4],[5,5]]
-
-squares[5] = [[3,6],[3,7],[3,8],
-              [4,6],[4,7],[4,8],
-              [5,6],[5,7],[5,8]]
-
-squares[6] = [[6,0],[6,1],[6,2],
-              [7,0],[7,1],[7,2],
-              [8,0],[8,1],[8,2]]
-
-squares[7] = [[6,3],[6,4],[6,5],
-              [7,3],[7,4],[7,5],
-              [8,3],[8,4],[8,5]]
-
-squares[8] = [[6,6],[6,7],[6,8],
-              [7,6],[7,7],[7,8],
-              [8,6],[8,7],[8,8]]
+squares[1] = [(0,3),(0,4),(0,5),
+              (1,3),(1,4),(1,5),
+              (2,3),(2,4),(2,5)]
+          
+squares[2] = [(0,6),(0,7),(0,8),
+              (1,6),(1,7),(1,8),
+              (2,6),(2,7),(2,8)]
+          
+squares[3] = [(3,0),(3,1),(3,2),
+              (4,0),(4,1),(4,2),
+              (5,0),(5,1),(5,2)]
+          
+squares[4] = [(3,3),(3,4),(3,5),
+              (4,3),(4,4),(4,5),
+              (5,3),(5,4),(5,5)]
+          
+squares[5] = [(3,6),(3,7),(3,8),
+              (4,6),(4,7),(4,8),
+              (5,6),(5,7),(5,8)]
+          
+squares[6] = [(6,0),(6,1),(6,2),
+              (7,0),(7,1),(7,2),
+              (8,0),(8,1),(8,2)]
+          
+squares[7] = [(6,3),(6,4),(6,5),
+              (7,3),(7,4),(7,5),
+              (8,3),(8,4),(8,5)]
+          
+squares[8] = [(6,6),(6,7),(6,8),
+              (7,6),(7,7),(7,8),
+              (8,6),(8,7),(8,8)]
 
 def createTable():
     currentMatrix = []
@@ -136,7 +136,7 @@ def printRow(row):
 def createGame(matrix, difficulty):
     aux_matrix = copy.deepcopy(matrix)
     if (difficulty=='easy'):
-        NUM = 30
+        NUM = 26
     elif(difficulty=='medium'):
         NUM = 36
     elif(difficulty=='hard'):
@@ -163,7 +163,8 @@ def isInsertable(matrix, row, column, number):
         return False
     return True
 
-def basicCheck(game,row,column):
+#deprecated
+"""def basicCheck(game,row,column): 
     insertNumber = 0
     insertableNumbers = 0
     for number in range(1,10):
@@ -173,25 +174,31 @@ def basicCheck(game,row,column):
     if (insertableNumbers == 1):
         game[row][column] = insertNumber
         return True
-    return False
+    return False"""
 
-def duoCheck(game,row,column,possibilities):
-    
-    insertNumber = 0
-    insertableNumbers = 0
+#popula as coordenadas onde só ha 1 número possível
+def basicPopulate(game):
+    for key in possibilities:
+        if len(possibilities[key]) == 1:
+            game[key[0]][key[1]] = possibilities[key]
+
+#incomplete
+"""#verifica se há pares de possibilidades nas coordenadas dentro de um quadrado
+def pairPopulate(game): 
+    for key in possibilities:#watchout for checking key twice if has duo
+        #apenas dois valores possiveis para a coordenada
+        duo = possibilities[key] if (len(possibilities[key]) == 2) else []"""
+
+#popula o dicionário possibilities
+def checkPossibilities(game,row,column):
     for number in range(1,10):
         if (isInsertable(game, row, column, number)):
-            insertNumber = number
-            if str([row,column]) in possibilities:
-                possibilities[str( [row,column] )].append(number)
+            #print("Row ",row," Column ", column," N ",number)
+            if (row,column) in possibilities:
+                possibilities[(row,column)].append(number)
             else:
-                possibilities[str( [row,column] )] = []
-            
-            """insertableNumbers+=1
-    if (insertableNumbers == 1):
-        game[row][column] = insertNumber
-        return True
-    return False"""
+                possibilities[(row,column)] = [number]
+            #print(possibilities)            
 
 def solveGame(game):
     
@@ -206,15 +213,20 @@ def solveGame(game):
                 coordinates.remove([row,column])
                 break
     return game"""
-    coordinates = getCoordinates(game,0)
-    for row,column in coordinates:
-        if duoCheck(game,row,column,possibilities):
-            coordinates.remove([row,column])
+    
+    while True: #loop infinito (versão python de um bloco do-while)
+        coordinates = getCoordinates(game,0)
+        print(coordinates) #é isso aqui que está printando eternamente
+        if not coordinates:
             break
+        for row,column in coordinates:
+            possibilities = {} #reseta dicionário NÃO TÁ FUNFANDO, ACHO QUE O ERRO TÁ AQUI
+            checkPossibilities(game,row,column)
+            basicPopulate(game)
     return game
     
 
-#Get an array of coordinates equal to 'number' inside array 'matrix'
+#Return an array of coordinates inside array 'matrix' where 'number' is present
 def getCoordinates(matrix,number):
     coordinates =[]
     for x in range(0,9):
@@ -232,5 +244,6 @@ if __name__ == '__main__':
     #game = createGame(table,"hard")
     print(printMatrix(game))
     print("Solving game...")
-    print (printMatrix(solveGame(game)))
-    print (possibilities)
+    #print (printMatrix(solveGame(game)))
+    solveGame(game)
+    print("Solved.")
