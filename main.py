@@ -180,21 +180,44 @@ def isInsertable(matrix, row, column, number):
 def basicPopulate(game):
     for key in possibilities:
         if len(possibilities[key]) == 1:
-            game[key[0]][key[1]] = possibilities[key]
+            possiblitiesArray = possibilities[key]
+            game[key[0]][key[1]] = possiblitiesArray[0]
 
-#incomplete
-"""#verifica se há pares de possibilidades nas coordenadas dentro de um quadrado
-def pairPopulate(game): 
-    for key in possibilities:#watchout for checking key twice if has duo
+#verifica se há pares de possibilidades nas coordenadas dentro de um quadrado
+#NÃO TESTADO
+def pairPopulate(game):
+    duoKeys = []
+    for key in possibilities:
         #apenas dois valores possiveis para a coordenada
-        duo = possibilities[key] if (len(possibilities[key]) == 2) else []"""
+        #duo = possibilities[key] if (len(possibilities[key]) == 2) else []
+        duoKeys.append(key) if (len(possibilities[key]) == 2) else []
+
+    for square in squares:
+        #containsMatchingMultipleDuoKeys(square,duoKeys):
+        #   updateSquareValues
+
+#NÃO TESTADO
+def containsMatchingMultipleDuoKeys(square,duoKeys):
+    duoKeysCounter = 0
+    for coordinate in square:
+        if arrayContains(duoKeys,coordinate):
+            duoKeysCounter += 1
+
+    
+#NÃO TESTADO
+def arrayContains(array,itemToCheck):
+    for item in array
+        if itemToCheck == item:
+            return True
+    return False
 
 #popula o dicionário possibilities
-def checkPossibilities(game,row,column):
+def addPossibilitiesToDictionary(game,row,column):
     for number in range(1,10):
+        #Verifica row, column and square
         if (isInsertable(game, row, column, number)):
             #print("Row ",row," Column ", column," N ",number)
-            if (row,column) in possibilities:
+            if (row,column) in possibilities: #Checa se a posição já existe no dicionário
                 possibilities[(row,column)].append(number)
             else:
                 possibilities[(row,column)] = [number]
@@ -219,10 +242,14 @@ def solveGame(game):
         print(coordinates) #é isso aqui que está printando eternamente
         if not coordinates:
             break
+        #Para cada coordenada tenta resolução
         for row,column in coordinates:
-            possibilities = {} #reseta dicionário NÃO TÁ FUNFANDO, ACHO QUE O ERRO TÁ AQUI
-            checkPossibilities(game,row,column)
+            possibilities.clear()
+            addPossibilitiesToDictionary(game,row,column)
             basicPopulate(game)
+
+        #break
+        #loop infinito se há itens com mais de uma possibilidade
     return game
     
 
@@ -231,7 +258,7 @@ def getCoordinates(matrix,number):
     coordinates =[]
     for x in range(0,9):
         for y in range(0,9):
-            if game[x][y] == 0:
+            if game[x][y] == number:
                 coordinates.append( [x,y] )
     return coordinates
  
@@ -244,6 +271,10 @@ if __name__ == '__main__':
     #game = createGame(table,"hard")
     print(printMatrix(game))
     print("Solving game...")
-    #print (printMatrix(solveGame(game)))
-    solveGame(game)
+    #possibilities[0,0] = [8,9]
+    #possibilities[0,1] = [4]
+    #print(possibilities)
+    #duo = possibilities[0,0] if (len(possibilities[0,0]) == 2) else []
+    
+    #print (printMatrix(solveGame(game)))   
     print("Solved.")
