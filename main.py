@@ -1,7 +1,7 @@
 ﻿import random
 import copy
 
-squares = {} #armazena todas as coordenadas para cada quadrado HU3
+squares = {} #armazena todas as coordenadas para cada quadrado
 squares[0] = [[0,0],[0,1],[0,2],
               [1,0],[1,1],[1,2],
               [2,0],[2,1],[2,2]]
