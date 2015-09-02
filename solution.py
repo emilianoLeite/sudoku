@@ -1,38 +1,34 @@
-from generation import isInsertable
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+from generation import isInsertable, getSquaresDic, getSquareCoord
 
+squares = getSquaresDic()
 possibilities = {} #armazena todas as possibilidades de cada coordenada
 
 def solveGame(game):
-    
-    """coordinates = getCoordinates(game,0)
-    #print(coordinates)
-    while(coordinates): #while coordinates is not empty        
-        for row,column in coordinates:
-            if(basicCheck(game,row,column)):
-                coordinates.remove([row,column])
-                break
-            if duoCheck(game,row,column,possibilities):
-                coordinates.remove([row,column])
-                break
-    return game"""
-    
-    while True: #loop infinito (versão python de um bloco do-while)
-        coordinates = getCoordinates(game,0)
-        print(coordinates) #é isso aqui que está printando eternamente
+    while True: 
+        coordinates = getCoordinates(game,0) #coordenadas a serem preenchidas
+        #print(coordinates)
         if not coordinates:
             break
-        #Para cada coordenada tenta resolução
-        for row,column in coordinates:
-            possibilities.clear()
-            addPossibilitiesToDictionary(game,row,column)
-            basicPopulate(game)
+
+        possibilities.clear()
+        for row,column in coordinates: 
+            populatePossibilities(game,row,column)
+        
+        #basicPopulate(game)
+        pairPopulate(game)
 
         #break
-        #loop infinito se há itens com mais de uma possibilidade
+        #loop infinito se itens com mais de uma possibilidade
     return game
 
-#Return an array of coordinates inside array 'matrix' where 'number' is present
+
 def getCoordinates(matrix,number):
+    '''
+    Return an array of coordinates 
+    inside array 'matrix' where 'number' is present
+    '''
     coordinates =[]
     for x in range(0,9):
         for y in range(0,9):
@@ -40,49 +36,70 @@ def getCoordinates(matrix,number):
                 coordinates.append( [x,y] )
     return coordinates
 
-#popula o dicionário possibilities
-def addPossibilitiesToDictionary(game,row,column):
+def populatePossibilities(game,row,column):
+    '''
+    Popula o dicionário 'possibilities'
+    com todas as possibilidades para uma
+    dada coordenada('row','column') dentro da
+    matrix 'game'
+    '''
     for number in range(1,10):
         #Verifica row, column and square
         if (isInsertable(game, row, column, number)):
             #print("Row ",row," Column ", column," N ",number)
-            if (row,column) in possibilities: #Checa se a posição já existe no dicionário
+            if (row,column) in possibilities: 
                 possibilities[(row,column)].append(number)
             else:
                 possibilities[(row,column)] = [number]
             #print(possibilities)
 
-#popula as coordenadas onde só ha 1 número possível
 def basicPopulate(game):
+    '''
+    Popula o jogo nas coordenadas
+    onde apenas um número e possível
+    '''
     for key in possibilities:
         if len(possibilities[key]) == 1:
             game[key[0]][key[1]] = possibilities[key][0]
             
-#verifica se há pares de possibilidades nas coordenadas dentro de um quadrado
-#NÃO TESTADO
-"""def pairPopulate(game):
+def pairPopulate(game):
+    '''
+    Reduz o espectro de possibilidades baseado
+    na verificação de pares:
+    Se um quadrado possui mais de uma coordenada 
+    onde apenas 2 números são possíveis, então pode-se
+    remover das outras coordenadas a possibilidade desses
+    dois números.
+    '''
     duoKeys = []
+    alreadyChecked = []
     for key in possibilities:
-        #apenas dois valores possiveis para a coordenada
-        #duo = possibilities[key] if (len(possibilities[key]) == 2) else []
-        duoKeys.append(key) if (len(possibilities[key]) == 2) else []
+        if not key in alreadyChecked:
+            #apenas dois possibilidades para a coordenada
+            if (len(possibilities[key]) == 2):
+                duo = possibilities[key] #os dois valores possiveis
+                square = getSquareCoord(key) #array com todas as coordenadas do quadrado onde duo se encontra
+                moreDuos = hasMultiplePairs(square,duo)#array com as coordenadas onde o mesmo par de duo ocorre(incluindo a ocorrencia original)
+                if len(moreDuos) > 1: #existem outros pares identicos, alem do original
+                    for coord in moreDuos:
+                        alreadyChecked.append(coord)
+                    for coord in square: #varre todas as coordenadas do quadardo
+                        if  coord in possibilities and not coord in moreDuos: #verifica todos as outras coordenadas do quadrado
+                            if duo[0] in possibilities[coord]:
+                                possibilities[coord].remove(duo[0]) 
+                            if duo[1] in possibilities[coord]:
+                                possibilities[coord].remove(duo[1])     
+    basicPopulate(game)
 
-    for square in squares:
-        #containsMatchingMultipleDuoKeys(square,duoKeys):
-        #   updateSquareValues"""
-
-#NÃO TESTADO
-def containsMatchingMultipleDuoKeys(square,duoKeys):
-    duoKeysCounter = 0
+def hasMultiplePairs(square,duo):
+    '''
+    Verifica se um quadrado 'square'
+    possui mais de uma coordenada onde as
+    únicas possibilidades são os números 
+    contidos em 'duo'
+    '''
+    pairs =[]
     for coordinate in square:
-        if arrayContains(duoKeys,coordinate):
-            duoKeysCounter += 1
-
-    
-#NÃO TESTADO
-def arrayContains(array,itemToCheck):
-    for item in array:
-        if itemToCheck == item:
-            return True
-    return False
-
+        if coordinate in possibilities and possibilities[coordinate] == duo:
+            pairs.append(coordinate)
+    return pairs
