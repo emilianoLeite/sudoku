@@ -36,8 +36,7 @@ if __name__ == '__main__':
     
     game = createGame(table,"medium")
     print("Medium:")
-    print(
-        printMatrix(game))
+    print(printMatrix(game))
     print("Solving medium game...")
     print (printMatrix(solveGame(game)))   
     print("Solved.\n")
