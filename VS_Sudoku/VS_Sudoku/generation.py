@@ -55,6 +55,16 @@ def getSquare(matrix,index):
             square.append(matrix[x][y])
     return square
 
+def getSquareCoord(index=9,coord=(0,0)):
+    if not index==9:
+        for square in squares:
+            if coord in square:
+                return square
+    else:
+        return squares[index]
+
+
+
 def verifySquares(matrix):
     for i in range(9):
         currentSquare = getSquare(matrix,i)
@@ -145,6 +155,3 @@ def isInsertable(matrix, row, column, number):
 
 def getSquaresDic():
     return squares
-
-#testando 1233
-#sdaddsa

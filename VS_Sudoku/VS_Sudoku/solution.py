@@ -1,4 +1,4 @@
-from generation import isInsertable, getSquaresDic
+from generation import isInsertable, getSquaresDic, getSquareCoord
 
 squares = getSquaresDic()
 possibilities = {} #armazena todas as possibilidades de cada coordenada
@@ -45,7 +45,7 @@ def basicPopulate(game):
             game[key[0]][key[1]] = possibilities[key][0]
             
 #Nao TESTADO
-"""def pairPopulate(game):
+def pairPopulate(game):
     duoKeys = []
     for key in possibilities:
         #apenas dois valores possiveis para a coordenada
@@ -54,7 +54,7 @@ def basicPopulate(game):
 
     for square in squares:
         #containsMatchingMultipleDuoKeys(square,duoKeys):
-        #   updateSquareValues"""
+        #   updateSquareValues
 
 #Nao TESTADO
 def containsMatchingMultipleDuoKeys(square,duoKeys):
