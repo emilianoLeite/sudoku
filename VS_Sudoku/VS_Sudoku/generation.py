@@ -50,7 +50,7 @@ def createTable():
         currentMatrix = generateInitMatrix()
         currentMatrix = [list(i) for i in zip(*currentMatrix)] #transposição da matriz
         random.shuffle(currentMatrix)
-        if (random.random() <= 0,5):
+        if (random.random() <= 0.5):
             currentMatrix = [list(i) for i in zip(*currentMatrix)] #transposição da matriz
         if verifySquares(currentMatrix):
             break
