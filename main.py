@@ -23,18 +23,27 @@ def printRow(row):
     return result
 
 if __name__ == '__main__':
-    print ("Iniciando geração do sudoku")
+    print ("Iniciando geracao do sudoku")
     table = createTable()
     print (printMatrix(table))
-    game = createGame(table,"easy")
-    #game = createGame(table,"medium")
-    #game = createGame(table,"hard")
-    print(printMatrix(game))
-    print("Solving game...")
-    #possibilities[0,0] = [8,9]
-    #possibilities[0,1] = [4]
-    #print(possibilities)
-    #duo = possibilities[0,0] if (len(possibilities[0,0]) == 2) else []
     
+    game = createGame(table,"easy")
+    print("Easy:")
+    print(printMatrix(game))
+    print("Solving easy game...")
     print (printMatrix(solveGame(game)))   
-    print("Solved.")
+    print("Solved.\n")
+    
+    game = createGame(table,"medium")
+    print("Medium:")
+    print(printMatrix(game))
+    print("Solving medium game...")
+    print (printMatrix(solveGame(game)))   
+    print("Solved.\n")
+    
+    game = createGame(table,"hard")
+    print("Hard:")
+    print(printMatrix(game))
+    print("Solving hard game...")
+    print (printMatrix(solveGame(game)))   
+    print("Solved.\n")
