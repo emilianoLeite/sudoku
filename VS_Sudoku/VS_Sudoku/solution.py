@@ -5,14 +5,17 @@ possibilities = {} #armazena todas as possibilidades de cada coordenada
 
 def solveGame(game):
     while True: 
-        coordinates = getCoordinates(game,0)
+        coordinates = getCoordinates(game,0) #coordenadas que faltam ser preenchidas
         #print(coordinates)
         if not coordinates:
             break
-     
+
+        possibilities.clear()
         for row,column in coordinates: 
             populatePossibilities(game,row,column)
-            basicPopulate(game)
+        
+        #basicPopulate(game)
+        pairPopulate(game)
 
         #break
         #loop infinito se itens com mais de uma possibilidade
@@ -28,16 +31,15 @@ def getCoordinates(matrix,number):
     return coordinates
 
 def populatePossibilities(game,row,column):
-    possibilities.clear()
     for number in range(1,10):
         #Verifica row, column and square
         if (isInsertable(game, row, column, number)):
-            #print("Row ",row," Column ", column," N ",number)
+            print("Row ",row," Column ", column," N ",number)
             if (row,column) in possibilities: 
                 possibilities[(row,column)].append(number)
             else:
                 possibilities[(row,column)] = [number]
-            #print(possibilities)
+            print(possibilities)
 
 def basicPopulate(game):
     for key in possibilities:
@@ -47,27 +49,32 @@ def basicPopulate(game):
 #Nao TESTADO
 def pairPopulate(game):
     duoKeys = []
+    alreadyChecked = []
     for key in possibilities:
-        #apenas dois valores possiveis para a coordenada
-        #duo = possibilities[key] if (len(possibilities[key]) == 2) else []
-        duoKeys.append(key) if (len(possibilities[key]) == 2) else []
-
-    for square in squares:
-        #containsMatchingMultipleDuoKeys(square,duoKeys):
-        #   updateSquareValues
-
-#Nao TESTADO
-def containsMatchingMultipleDuoKeys(square,duoKeys):
-    duoKeysCounter = 0
-    for coordinate in square:
-        if arrayContains(duoKeys,coordinate):
-            duoKeysCounter += 1
-
+        if not key in alreadyChecked:
+            #apenas dois possibilidades para a coordenada
+            if (len(possibilities[key]) == 2):
+                #alreadyChecked.append(key)
+                duo = possibilities[key] #os dois valores possiveis
+                square = getSquareCoord(key) #array com todas as coordenadas do quadrado onde duo se encontra
+                moreDuos = hasMultiplePairs(square,duo)#array com as coordenadas onde o mesmo par de duo ocorre(incluindo a ocorrencia original)
+                if len(moreDuos) > 1: #existem outros pares identicos, alem do original
+                    for coord in moreDuos:
+                        alreadyChecked.append(coord)
+                    #moreDuos.append(key) #adiciona a coordenada inicial, para completar a lista
+                    for coord in square: #varre todas as coordenadas do quadardo
+                        if not coord in moreDuos: #verifica todos as outras coordenadas do quadrado
+                            if duo[0] in possibilities[coord]:
+                                possibilities[coord].remove(duo[0]) 
+                            if duo[1] in possibilities[coord]:
+                                possibilities[coord].remove(duo[1])  
     
-#Nao TESTADO
-def arrayContains(array,itemToCheck):
-    for item in array:
-        if itemToCheck == item:
-            return True
-    return False
 
+
+#Nao TESTADO
+def hasMultiplePairs(square,duo):
+    pairs =[]
+    for coordinate in square:
+        if possibilities[coordinate] == duo:
+            pairs.append(coordinate)
+    return pairs
