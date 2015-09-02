@@ -1,6 +1,6 @@
+# -*- coding: utf-8 -*-
 from generation import *
 from solution import *
-
 def printMatrix(matrix):
     result = ""
     for i in range(9):

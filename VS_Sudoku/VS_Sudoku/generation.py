@@ -43,7 +43,6 @@ def createTable():
     currentMatrix = []
     while True:
         currentMatrix = generateInitMatrix()
-        #transpõe matriz
         currentMatrix = [list(i) for i in zip(*currentMatrix)]
         random.shuffle(currentMatrix)
         if ( verifySquares(currentMatrix) ):
@@ -105,7 +104,7 @@ def createGame(matrix, difficulty):
     for qtd in range(NUM):
         x = random.randint(0,8)
         y = random.randint(0,8)       
-        #Para não repetir o local ja sorteado
+        #Para nao repetir o local ja sorteado
         while aux_matrix[x][y] == 0:
             x = random.randint(0,8)
             y = random.randint(0,8) 
@@ -116,24 +115,24 @@ def createGame(matrix, difficulty):
 def checkColumn(matrix, column, number):
     for row in matrix:
         if row[column] == number:
-            return False #já existe número na already na coluna
+            return False #ja existe numero na coluna
     return True
 
 def checkRow(matrix, row, number):
     for column in range(0,9):
         if matrix[row][column] == number:
-            return False #já existe número na linha
+            return False #ja existe numero na linha
     return True
 
 def checkSquare(matrix,row,column,number):
     square = [row,column]
-    for i in range(0,9): #varre as chaves do dicionário
+    for i in range(0,9): #varre as chaves do dicionario
         if square in squares[i]:
             for x,y in squares[i]: #varre as coordenadas do quadrado
                 if(matrix[x][y] == number):
-                    return False #o número já existe no quadrado
+                    return False #o numero ja existe no quadrado
             
-    return True #o número não existe no quadrado
+    return True #o numero nao existe no quadrado
 
 def isInsertable(matrix, row, column, number):
     if( not checkRow(matrix, row, number) ):
@@ -146,3 +145,5 @@ def isInsertable(matrix, row, column, number):
 
 def getSquaresDic():
     return squares
+
+#testando 1233
