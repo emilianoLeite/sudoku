@@ -26,7 +26,6 @@
     <Compile Include="generation.py" />
     <Compile Include="main.py" />
     <Compile Include="solution.py" />
-    <Compile Include="VS_Sudoku.py" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
