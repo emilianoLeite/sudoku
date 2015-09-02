@@ -34,12 +34,12 @@ def populatePossibilities(game,row,column):
     for number in range(1,10):
         #Verifica row, column and square
         if (isInsertable(game, row, column, number)):
-            print("Row ",row," Column ", column," N ",number)
+            #print("Row ",row," Column ", column," N ",number)
             if (row,column) in possibilities: 
                 possibilities[(row,column)].append(number)
             else:
                 possibilities[(row,column)] = [number]
-            print(possibilities)
+            #print(possibilities)
 
 def basicPopulate(game):
     for key in possibilities:
@@ -63,18 +63,16 @@ def pairPopulate(game):
                         alreadyChecked.append(coord)
                     #moreDuos.append(key) #adiciona a coordenada inicial, para completar a lista
                     for coord in square: #varre todas as coordenadas do quadardo
-                        if not coord in moreDuos: #verifica todos as outras coordenadas do quadrado
+                        if  coord in possibilities and not coord in moreDuos: #verifica todos as outras coordenadas do quadrado
                             if duo[0] in possibilities[coord]:
                                 possibilities[coord].remove(duo[0]) 
                             if duo[1] in possibilities[coord]:
-                                possibilities[coord].remove(duo[1])  
-    
-
-
+                                possibilities[coord].remove(duo[1])     
+    basicPopulate(game)
 #Nao TESTADO
 def hasMultiplePairs(square,duo):
     pairs =[]
     for coordinate in square:
-        if possibilities[coordinate] == duo:
+        if coordinate in possibilities and possibilities[coordinate] == duo:
             pairs.append(coordinate)
     return pairs
