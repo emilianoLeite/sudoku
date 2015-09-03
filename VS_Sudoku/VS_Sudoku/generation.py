@@ -1,219 +1,126 @@
 #-*- coding: utf-8 -*-
-import random
-import copy
+from generation import isInsertable, getSquaresDic, getSquareCoord
 
-squares = {}#armazena todas as coordenadas para cada quadrado
-squares[0] = [(0,0),(0,1),(0,2),
-              (1,0),(1,1),(1,2),
-              (2,0),(2,1),(2,2)]
+squares = getSquaresDic()
+possibilities = {} #armazena todas as possibilidades de cada coordenada
 
-squares[1] = [(0,3),(0,4),(0,5),
-              (1,3),(1,4),(1,5),
-              (2,3),(2,4),(2,5)]
-          
-squares[2] = [(0,6),(0,7),(0,8),
-              (1,6),(1,7),(1,8),
-              (2,6),(2,7),(2,8)]
-          
-squares[3] = [(3,0),(3,1),(3,2),
-              (4,0),(4,1),(4,2),
-              (5,0),(5,1),(5,2)]
-          
-squares[4] = [(3,3),(3,4),(3,5),
-              (4,3),(4,4),(4,5),
-              (5,3),(5,4),(5,5)]
-          
-squares[5] = [(3,6),(3,7),(3,8),
-              (4,6),(4,7),(4,8),
-              (5,6),(5,7),(5,8)]
-          
-squares[6] = [(6,0),(6,1),(6,2),
-              (7,0),(7,1),(7,2),
-              (8,0),(8,1),(8,2)]
-          
-squares[7] = [(6,3),(6,4),(6,5),
-              (7,3),(7,4),(7,5),
-              (8,3),(8,4),(8,5)]
-          
-squares[8] = [(6,6),(6,7),(6,8),
-              (7,6),(7,7),(7,8),
-              (8,6),(8,7),(8,8)]
+def solveGame(game):
+    populatePossibilities(game)
+    basicPopulate(game)
+    while not possibilities:
+        hiddenPopulate(game)
+        pairPopulate(game)
+    return game
 
 
-def createTable():
+def getCoordinates(matrix,number):
     '''
-    Cria matriz completa.
+    Return an array of coordinates 
+    inside array 'matrix' where 'number' is present
     '''
-    while True:
-        currentMatrix = generateInitMatrix()
-        if (random.random() <= 0.5):
-            #fazer shuffle apenas de tres em tres linhas
-            aux = currentMatrix[:3]
-            random.shuffle(aux)
-            currentMatrix[:3] = aux
+    coordinates =[]
+    for x in range(9):
+        for y in range(9):
+            if matrix[x][y] == number:
+                coordinates.append( [x,y] )
+    return coordinates
+
+def populatePossibilities(game):
+    '''
+    Popula o dicionário 'possibilities'
+    com todas as possibilidades restantes
+    dentro da matrix 'game'
+    '''
+    possibilities.clear()
+    coordinates = getCoordinates(game,0)
+    if coordinates:
+        for row,column in coordinates: 
+            for number in range(1,10):
+                #Verifica row, column and square
+                if (isInsertable(game, row, column, number)):
+                    #print("Row ",row," Column ", column," N ",number)
+                    if (row,column) in possibilities: 
+                        possibilities[(row,column)].append(number)
+                    else:
+                        possibilities[(row,column)] = [number]
+                    #print(possibilities)
+
+def basicPopulate(game):
+    '''
+    Popula o jogo nas coordenadas
+    onde apenas um número e possível
+    '''
+    delete = [] #chaves a serem deletadas, pois a possibilidade foi preenchida
+    for key in possibilities:
+        if len(possibilities[key]) == 1:
+            delete.append(key)
+            game[key[0]][key[1]] = possibilities[key][0]
+    for key in delete:
+        possibilities.pop(key, None)
+    #populatePossibilities(game)
             
-            aux = currentMatrix[3:6]
-            random.shuffle(aux)
-            currentMatrix[3:6] = aux
-            
-            aux = currentMatrix[6:]
-            random.shuffle(aux)
-            currentMatrix[6:] = aux
-            
-        if (random.random() <= 0.5):
-            currentMatrix = [list(i) for i in zip(*currentMatrix)] #transposição da matriz
-    return currentMatrix
+def pairPopulate(game):
+    '''
+    Reduz o espectro de possibilidades baseado
+    na verificação de pares:
+    Se um quadrado possui mais de uma coordenada 
+    onde apenas 2 números são possíveis, então pode-se
+    remover das outras coordenadas a possibilidade desses
+    dois números.
+    '''
+    duoKeys = []
+    alreadyChecked = []
+    for key in possibilities:
+        if not key in alreadyChecked:
+            if (len(possibilities[key]) == 2): #apenas dois possibilidades para a coordenada
+                duo = possibilities[key] #os dois valores possiveis
+                square = getSquareCoord(key) #array com todas as coordenadas do quadrado onde duo se encontra
+                moreDuos = hasMultiplePairs(square,duo) #array com as coordenadas onde o mesmo par de duo ocorre(incluindo a ocorrencia original)
+                if len(moreDuos) > 1: #existem outros pares identicos, alem do original
+                    for coord in moreDuos:
+                        alreadyChecked.append(coord)
+                    for coord in square: #varre todas as coordenadas do quadardo
+                        if  coord in possibilities and not coord in moreDuos: #verifica todos as outras coordenadas do quadrado
+                            if duo[0] in possibilities[coord]:
+                                possibilities[coord].remove(duo[0]) 
+                            if duo[1] in possibilities[coord]:
+                                possibilities[coord].remove(duo[1])     
+    basicPopulate(game)
 
-def generateInitMatrix():
+def hasMultiplePairs(square,duo):
     '''
-    Gera a matriz inicial, sorteando
-    um número para cada letra(A..I)
-    e inserindo-os numa ordem que é
-    conhecidamente correta.
+    Verifica se um quadrado 'square'
+    possui mais de uma coordenada onde as
+    únicas possibilidades são os números 
+    contidos em 'duo'
+    '''
+    pairs =[]
+    for coordinate in square:
+        if coordinate in possibilities and possibilities[coordinate] == duo:
+            pairs.append(coordinate)
+    return pairs
 
-    Créditos a Edison Makoto.
+def hiddenPopulate(game):
     '''
-    sorteador = [1,2,3,4,5,6,7,8,9]
-    random.shuffle(sorteador)
-    A = sorteador[0]
-    B = sorteador[1]
-    C = sorteador[2]
-    D = sorteador[3]
-    E = sorteador[4]
-    F = sorteador[5]
-    G = sorteador[6]
-    H = sorteador[7]
-    I = sorteador[8]
-    sudoku= [
-                [A,B,C, D,E,F, G,H,I],
-                [D,E,F, G,H,I, A,B,C],
-                [G,H,I, A,B,C, D,E,F],
-                [B,C,A, E,F,D, H,I,G],
-                [E,F,D, H,I,G, B,C,A],
-                [H,I,G, B,C,A, E,F,D],
-                [C,A,B, F,D,E, I,G,H],
-                [F,D,E, I,G,H, C,A,B],
-                [I,G,H, C,A,B, F,D,E],
-            ]
-    return sudoku
-
-def verifySquares(matrix):
-    '''
-    Verifica se há
-    incongruências nos quadrados da
-    matriz 'matrix'.
-    '''
-    for i in range(9):
-        currentSquare = getSquare(matrix,i)
-        if verifySquare(currentSquare) == False:
-            return False #há incongruências
-    return True
-
-def verifySquare(square):
-    '''
-    Verifica se há
-    incongruências no quadrado 'square'.
-    '''
-    for i in range(9):
-        numOfOcurrences = square.count(square[i])
-        if numOfOcurrences > 1:
-            return False #há incongruências
-    return True
-
-def getSquare(matrix,index):
-    '''Retorna os números do quadrado
-    de índice 'index'.
-    '''
-    square = []
-    for x,y in squares[index]:
-            square.append(matrix[x][y])
-    return square
-
-def getSquareCoord(coord): 
-    '''
-    Retorna o par chave-valor do
-    dicionário 'squares' que contém a coordenada
-    'coord'.
-    '''
-    for i in squares:
-        if coord in squares[i]:
-            return squares[i]
-
-def createGame(matrix, difficulty):
-    '''
-    Remove uma quantidade(estipulada pelo
-    argumento 'difficulty') de números da matriz
-    'matrix', afim de gerar uma matriz "jogável".
-    '''
-    aux_matrix = copy.deepcopy(matrix)
-    if (difficulty=='easy'):
-        NUM = 30
-    elif(difficulty=='medium'):
-        NUM = 36
-    elif(difficulty=='hard'):
-        NUM = 40
-    else:
-        return NULL
- 
-    for qtd in range(NUM):
-        x = random.randint(0,8)
-        y = random.randint(0,8)       
-        #Para nao repetir o local ja sorteado
-        while aux_matrix[x][y] == 0:
-            x = random.randint(0,8)
-            y = random.randint(0,8) 
-        aux_matrix[x][y] = 0
-        game = aux_matrix
-    return aux_matrix
-
-def checkColumn(matrix, column, number):
-    '''
-    Verifica se existe uma ocorrência
-    de 'number' em 'column' dentro de 'matrix'.
-    '''
-    for row in matrix:
-        if row[column] == number:
-            return False #ja existe numero na coluna
-    return True
-
-def checkRow(matrix, row, number):
-    '''
-    Verifica se existe uma ocorrência
-    de 'number' em 'row' dentro de 'matrix'.
-    '''
-    for column in range(0,9):
-        if matrix[row][column] == number:
-            return False #ja existe numero na linha
-    return True
-
-def checkSquare(matrix,row,column,number):
-    '''
-    Verifica se existe uma ocorrência
-    de 'number' no quadrado que possui
-    a coordenada ('row','column').
-    '''
-    coord = [row,column]
-    for i in range(0,9): #varre as chaves do dicionario
-        if coord in squares[i]:
-            for x,y in squares[i]: #varre as coordenadas do quadrado
-                if(matrix[x][y] == number):
-                    return False #o numero ja existe no quadrado
-            
-    return True #o numero nao existe no quadrado
-
-def isInsertable(game, row, column, number):
-    '''
-    Verifica se é possível inserir 'number'
-    na coordenada ('row','column') dentro de
-    'game'.
-    '''
-    if( not checkRow(game, row, number) ):
-        return False
-    if( not checkColumn(game, column, number) ):
-        return False
-    if( not checkSquare(game, row, column, number) ):
-        return False
-    return True
-
-def getSquaresDic():
-    return squares
+    Acha as possibilidades únicas
+    "escondidas":
+    Se uma coordenada possui mais 
+    de uma possibilidade, porém 
+    um desses números não é possível
+    em nenhuma outra coordenada daquele 
+    quadrado, considera-se esse número
+    uma possibilidade única escondida.
+    '''    
+    for square in squares:
+        ocorrences = [0]*10 #primeiro elemento fica em branco
+        for coordinate in square:
+            if coordinate in possibilities:
+               for number in range(1,10):
+                   ocorrences[number]+= possibilities[coordinate].count(number)
+        for i in range(10):
+            if ocorrences[i] == 1:
+                for x,y in square:
+                    if (x,y) in possibilities:
+                        if i in possibilities[coordinate]:
+                            game[x][y] = i
+    populatePossibilities(game)
