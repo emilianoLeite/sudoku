@@ -62,8 +62,6 @@ def createTable():
             
         if (random.random() <= 0.5):
             currentMatrix = [list(i) for i in zip(*currentMatrix)] #transposição da matriz
-        if verifySquares(currentMatrix):
-            break
     return currentMatrix
 
 def generateInitMatrix():
