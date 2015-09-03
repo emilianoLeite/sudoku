@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+#-*- coding: utf-8 -*-
 from generation import isInsertable, getSquaresDic, getSquareCoord
 
 squares = getSquaresDic()
@@ -38,7 +37,7 @@ def getCoordinates(matrix,number):
 
 def populatePossibilities(game,row,column):
     '''
-    Popula o dicionário 'possibilities'
+    Popula o dicionÃ¡rio 'possibilities'
     com todas as possibilidades para uma
     dada coordenada('row','column') dentro da
     matrix 'game'
@@ -56,7 +55,7 @@ def populatePossibilities(game,row,column):
 def basicPopulate(game):
     '''
     Popula o jogo nas coordenadas
-    onde apenas um número e possível
+    onde apenas um nÃºmero e possÃ­vel
     '''
     for key in possibilities:
         if len(possibilities[key]) == 1:
@@ -65,11 +64,11 @@ def basicPopulate(game):
 def pairPopulate(game):
     '''
     Reduz o espectro de possibilidades baseado
-    na verificação de pares:
+    na verificaÃ§Ã£o de pares:
     Se um quadrado possui mais de uma coordenada 
-    onde apenas 2 números são possíveis, então pode-se
+    onde apenas 2 nÃºmeros sÃ£o possÃ­veis, entÃ£o pode-se
     remover das outras coordenadas a possibilidade desses
-    dois números.
+    dois nÃºmeros.
     '''
     duoKeys = []
     alreadyChecked = []
@@ -95,7 +94,7 @@ def hasMultiplePairs(square,duo):
     '''
     Verifica se um quadrado 'square'
     possui mais de uma coordenada onde as
-    únicas possibilidades são os números 
+    Ãºnicas possibilidades sÃ£o os nÃºmeros 
     contidos em 'duo'
     '''
     pairs =[]

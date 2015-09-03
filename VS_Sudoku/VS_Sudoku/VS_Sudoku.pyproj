@@ -23,6 +23,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="generation_makoto.py" />
     <Compile Include="generation.py" />
     <Compile Include="main.py" />
     <Compile Include="solution.py" />

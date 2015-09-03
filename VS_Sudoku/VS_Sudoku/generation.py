@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+#-*- coding: utf-8 -*-
 import random
 import copy
 
@@ -45,20 +44,19 @@ def createTable():
     '''
     Cria matriz completa.
     '''
-    currentMatrix = []
     while True:
         currentMatrix = generateInitMatrix()
-        currentMatrix = [list(i) for i in zip(*currentMatrix)] #transposição da matriz
+        currentMatrix = [list(i) for i in zip(*currentMatrix)] #transposiÃ§Ã£o da matriz
         random.shuffle(currentMatrix)
         if (random.random() <= 0.5):
-            currentMatrix = [list(i) for i in zip(*currentMatrix)] #transposição da matriz
+            currentMatrix = [list(i) for i in zip(*currentMatrix)] #transposiÃ§Ã£o da matriz
         if verifySquares(currentMatrix):
             break
     return currentMatrix
 
 def getSquare(matrix,index):
-    '''Retorna os números do quadrado
-    de índice 'index'.
+    '''Retorna os nÃºmeros do quadrado
+    de Ã­ndice 'index'.
     '''
     square = []
     for x,y in squares[index]:
@@ -68,7 +66,7 @@ def getSquare(matrix,index):
 def getSquareCoord(coord): 
     '''
     Retorna o par chave-valor do
-    dicionário 'squares' que contém a coordenada
+    dicionÃ¡rio 'squares' que contÃ©m a coordenada
     'coord'.
     '''
     for i in squares:
@@ -77,32 +75,32 @@ def getSquareCoord(coord):
 
 def verifySquares(matrix):
     '''
-    Verifica se há
-    incongruências nos quadrados da
+    Verifica se hÃ¡
+    incongruÃªncias nos quadrados da
     matriz 'matrix'.
     '''
     for i in range(9):
         currentSquare = getSquare(matrix,i)
         if verifySquare(currentSquare) == False:
-            return False #há incongruências
+            return False #hÃ¡ incongruÃªncias
     return True
 
 def verifySquare(square):
     '''
-    Verifica se há
-    incongruências no quadrado 'square'.
+    Verifica se hÃ¡
+    incongruÃªncias no quadrado 'square'.
     '''
     for i in range(9):
         numOfOcurrences = square.count(square[i])
         if numOfOcurrences > 1:
-            return False #há incongruências
+            return False #hÃ¡ incongruÃªncias
     return True
 
 def generateInitMatrix():
     '''
     Gera a matriz inicial, sorteando
     a ordem das linhas providas pela
-    função getInitRow.
+    funÃ§Ã£o getInitRow.
     '''
     sorteador = [1,2,3,4,5,6,7,8,9]
     random.shuffle(sorteador)
@@ -127,8 +125,8 @@ def getInitRow(index):
 def createGame(matrix, difficulty):
     '''
     Remove uma quantidade(estipulada pelo
-    argumento 'difficulty') de números da matriz
-    'matrix', afim de gerar uma matriz "jogável".
+    argumento 'difficulty') de nÃºmeros da matriz
+    'matrix', afim de gerar uma matriz "jogÃ¡vel".
     '''
     aux_matrix = copy.deepcopy(matrix)
     if (difficulty=='easy'):
@@ -153,7 +151,7 @@ def createGame(matrix, difficulty):
 
 def checkColumn(matrix, column, number):
     '''
-    Verifica se existe uma ocorrência
+    Verifica se existe uma ocorrÃªncia
     de 'number' em 'column' dentro de 'matrix'.
     '''
     for row in matrix:
@@ -163,7 +161,7 @@ def checkColumn(matrix, column, number):
 
 def checkRow(matrix, row, number):
     '''
-    Verifica se existe uma ocorrência
+    Verifica se existe uma ocorrÃªncia
     de 'number' em 'row' dentro de 'matrix'.
     '''
     for column in range(0,9):
@@ -173,7 +171,7 @@ def checkRow(matrix, row, number):
 
 def checkSquare(matrix,row,column,number):
     '''
-    Verifica se existe uma ocorrência
+    Verifica se existe uma ocorrÃªncia
     de 'number' no quadrado que possui
     a coordenada ('row','column').
     '''
@@ -188,7 +186,7 @@ def checkSquare(matrix,row,column,number):
 
 def isInsertable(game, row, column, number):
     '''
-    Verifica se é possível inserir 'number'
+    Verifica se Ã© possÃ­vel inserir 'number'
     na coordenada ('row','column') dentro de
     'game'.
     '''
