@@ -5,21 +5,11 @@ squares = getSquaresDic()
 possibilities = {} #armazena todas as possibilidades de cada coordenada
 
 def solveGame(game):
-    while True: 
-        coordinates = getCoordinates(game,0) #coordenadas a serem preenchidas
-        #print(coordinates)
-        if not coordinates:
-            break
-
-        possibilities.clear()
-        for row,column in coordinates: 
-            populatePossibilities(game,row,column)
-        
-        #basicPopulate(game)
+    populatePossibilities(game)
+    basicPopulate(game)
+    while not possibilities:
+        hiddenPopulate(game)
         pairPopulate(game)
-
-        #break
-        #loop infinito se itens com mais de uma possibilidade
     return game
 
 
@@ -29,37 +19,45 @@ def getCoordinates(matrix,number):
     inside array 'matrix' where 'number' is present
     '''
     coordinates =[]
-    for x in range(0,9):
-        for y in range(0,9):
+    for x in range(9):
+        for y in range(9):
             if matrix[x][y] == number:
                 coordinates.append( [x,y] )
     return coordinates
 
-def populatePossibilities(game,row,column):
+def populatePossibilities(game):
     '''
     Popula o dicionário 'possibilities'
-    com todas as possibilidades para uma
-    dada coordenada('row','column') dentro da
-    matrix 'game'
+    com todas as possibilidades restantes
+    dentro da matrix 'game'
     '''
-    for number in range(1,10):
-        #Verifica row, column and square
-        if (isInsertable(game, row, column, number)):
-            #print("Row ",row," Column ", column," N ",number)
-            if (row,column) in possibilities: 
-                possibilities[(row,column)].append(number)
-            else:
-                possibilities[(row,column)] = [number]
-            #print(possibilities)
+    possibilities.clear()
+    coordinates = getCoordinates(game,0)
+    if coordinates:
+        for row,column in coordinates: 
+            for number in range(1,10):
+                #Verifica row, column and square
+                if (isInsertable(game, row, column, number)):
+                    #print("Row ",row," Column ", column," N ",number)
+                    if (row,column) in possibilities: 
+                        possibilities[(row,column)].append(number)
+                    else:
+                        possibilities[(row,column)] = [number]
+                    #print(possibilities)
 
 def basicPopulate(game):
     '''
     Popula o jogo nas coordenadas
     onde apenas um número e possível
     '''
+    delete = [] #chaves a serem deletadas, pois a possibilidade foi preenchida
     for key in possibilities:
         if len(possibilities[key]) == 1:
+            delete.append(key)
             game[key[0]][key[1]] = possibilities[key][0]
+    for key in delete:
+        possibilities.pop(key, None)
+    #populatePossibilities(game)
             
 def pairPopulate(game):
     '''
@@ -74,11 +72,10 @@ def pairPopulate(game):
     alreadyChecked = []
     for key in possibilities:
         if not key in alreadyChecked:
-            #apenas dois possibilidades para a coordenada
-            if (len(possibilities[key]) == 2):
+            if (len(possibilities[key]) == 2): #apenas dois possibilidades para a coordenada
                 duo = possibilities[key] #os dois valores possiveis
                 square = getSquareCoord(key) #array com todas as coordenadas do quadrado onde duo se encontra
-                moreDuos = hasMultiplePairs(square,duo)#array com as coordenadas onde o mesmo par de duo ocorre(incluindo a ocorrencia original)
+                moreDuos = hasMultiplePairs(square,duo) #array com as coordenadas onde o mesmo par de duo ocorre(incluindo a ocorrencia original)
                 if len(moreDuos) > 1: #existem outros pares identicos, alem do original
                     for coord in moreDuos:
                         alreadyChecked.append(coord)
@@ -102,3 +99,28 @@ def hasMultiplePairs(square,duo):
         if coordinate in possibilities and possibilities[coordinate] == duo:
             pairs.append(coordinate)
     return pairs
+
+def hiddenPopulate(game):
+    '''
+    Acha as possibilidades únicas
+    "escondidas":
+    Se uma coordenada possui mais 
+    de uma possibilidade, porém 
+    um desses números não é possível
+    em nenhuma outra coordenada daquele 
+    quadrado, considera-se esse número
+    uma possibilidade única escondida.
+    '''    
+    for square in squares:
+        ocorrences = [0]*10 #primeiro elemento fica em branco
+        for coordinate in square:
+            if coordinate in possibilities:
+               for number in range(1,10):
+                   ocorrences[number]+= possibilities[coordinate].count(number)
+        for i in range(10):
+            if ocorrences[i] == 1:
+                for x,y in square:
+                    if (x,y) in possibilities:
+                        if i in possibilities[coordinate]:
+                            game[x][y] = i
+    populatePossibilities(game)
