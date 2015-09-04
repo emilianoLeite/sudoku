@@ -2,6 +2,7 @@
 import random
 import copy
 
+
 squares = {}#armazena todas as coordenadas para cada quadrado
 squares[0] = [(0,0),(0,1),(0,2),
               (1,0),(1,1),(1,2),
@@ -144,7 +145,7 @@ def createGame(matrix, difficulty):
     argumento 'difficulty') de números da matriz
     'matrix', afim de gerar uma matriz "jogável".
     '''
-    aux_matrix = copy.deepcopy(matrix)
+    
     if (difficulty=='easy'):
         NUM = 30
     elif(difficulty=='medium'):
@@ -153,16 +154,19 @@ def createGame(matrix, difficulty):
         NUM = 40
     else:
         return NULL
- 
-    for qtd in range(NUM):
-        x = random.randint(0,8)
-        y = random.randint(0,8)       
-        #Para nao repetir o local ja sorteado
-        while aux_matrix[x][y] == 0:
+    
+    while True: 
+        aux_matrix = copy.deepcopy(matrix)
+        for qtd in range(NUM):
             x = random.randint(0,8)
-            y = random.randint(0,8) 
-        aux_matrix[x][y] = 0
-        game = aux_matrix
+            y = random.randint(0,8)       
+            #Para nao repetir o local ja sorteado
+            while aux_matrix[x][y] == 0:
+                x = random.randint(0,8)
+                y = random.randint(0,8) 
+            aux_matrix[x][y] = 0
+        if isSolvable(aux_matrix):
+            break
     return aux_matrix
 
 def checkColumn(matrix, column, number):
@@ -216,3 +220,7 @@ def isInsertable(game, row, column, number):
 
 def getSquaresDic():
     return squares
+
+def isSolvable(game):
+    from solution import solveGame
+    return solveGame(game)
