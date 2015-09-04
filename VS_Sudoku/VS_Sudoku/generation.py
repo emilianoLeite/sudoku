@@ -191,7 +191,7 @@ def checkSquare(matrix,row,column,number):
     de 'number' no quadrado que possui
     a coordenada ('row','column').
     '''
-    coord = [row,column]
+    coord = (row,column)
     for i in range(9): #varre as chaves do dicionario
         if coord in squares[i]:
             for x,y in squares[i]: #varre as coordenadas do quadrado

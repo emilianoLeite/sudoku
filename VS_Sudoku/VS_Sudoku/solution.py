@@ -6,8 +6,8 @@ possibilities = {} #armazena todas as possibilidades de cada coordenada
 
 def solveGame(game):
     populatePossibilities(game)
-    basicPopulate(game)
-    while not possibilities:
+    #basicPopulate(game)
+    while possibilities:
         hiddenPopulate(game)
         pairPopulate(game)
     return game
@@ -111,16 +111,16 @@ def hiddenPopulate(game):
     quadrado, considera-se esse número
     uma possibilidade única escondida.
     '''    
-    for square in squares:
+    for key in squares:
         ocorrences = [0]*10 #primeiro elemento fica em branco
-        for coordinate in square:
+        for coordinate in squares[key]:
             if coordinate in possibilities:
                for number in range(1,10):
                    ocorrences[number]+= possibilities[coordinate].count(number)
         for i in range(10):
             if ocorrences[i] == 1:
-                for x,y in square:
+                for x,y in squares[key]:
                     if (x,y) in possibilities:
-                        if i in possibilities[coordinate]:
+                        if i in possibilities[(x,y)]:
                             game[x][y] = i
     populatePossibilities(game)
