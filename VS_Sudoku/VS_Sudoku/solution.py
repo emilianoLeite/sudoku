@@ -7,7 +7,7 @@ possibilities = {} #armazena todas as possibilidades de cada coordenada
 def solveGame(game):
     populatePossibilities(game)
     basicPopulate(game)
-    tries = 0
+    attempts = 0
     while possibilities:
         hiddenPopulate(game)
         basicPopulate(game)
@@ -15,10 +15,10 @@ def solveGame(game):
             break
         pairPossibility(game)
         basicPopulate(game)
-        tries+=1
-        if tries > 20:
-            return []
-    return game
+        attempts+=1
+        if attempts > 20:
+            return False #jogo não foi resolvido após 20 tentativas
+    return True #jogo foi resolvido
 
 
 def getCoordinates(matrix,number):

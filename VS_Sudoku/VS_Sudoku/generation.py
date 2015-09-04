@@ -223,4 +223,8 @@ def getSquaresDic():
 
 def isSolvable(game):
     from solution import solveGame
-    return solveGame(game)
+    aux_game = copy.deepcopy(game)
+    if solveGame(aux_game):
+        print(game)
+        return True
+    return False
