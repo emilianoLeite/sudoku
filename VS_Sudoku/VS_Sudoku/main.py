@@ -11,19 +11,6 @@ def printMatrix(matrix):
         result = result + "\r\n"
     return result
 
-def getRow(matrix,index):
-    return matrix[:][index]
-
-def getColumn(matrix,index):
-    return [row[index] for row in matrix]
-
-
-def printRow(row):
-    result = ""
-    for r in row:
-        result = result + str(r) + " "
-    return result
-
 if __name__ == '__main__':
     print ("Iniciando geracao do sudoku")
     table = createTable()
