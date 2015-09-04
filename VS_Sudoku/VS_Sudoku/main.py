@@ -25,7 +25,7 @@ def printRow(row):
     return result
 
 if __name__ == '__main__':
-    """print ("Iniciando geracao do sudoku")
+    print ("Iniciando geracao do sudoku")
     table = createTable()
     print (printMatrix(table))
     
@@ -48,16 +48,4 @@ if __name__ == '__main__':
     print(printMatrix(game))
     print("Solving hard game...")
     print (printMatrix(solveGame(game)))   
-    print("Solved.\n")"""
-    game = [
-            [0,5,0,0,0,7,0,6,0],
-            [0,9,0,0,4,8,0,0,0],
-            [0,1,7,0,5,0,0,0,0],
-            [0,0,0,1,8,0,7,0,0],
-            [8,4,0,0,0,0,0,9,6],
-            [0,0,9,0,3,6,0,0,0],
-            [0,0,0,0,7,0,9,1,0],
-            [0,0,0,8,6,0,0,5,0],
-            [0,2,0,3,0,0,0,4,0],
-           ]
-    solveGame(game)
+    print("Solved.\n")

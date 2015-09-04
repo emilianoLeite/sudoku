@@ -6,10 +6,14 @@ possibilities = {} #armazena todas as possibilidades de cada coordenada
 
 def solveGame(game):
     populatePossibilities(game)
-    #basicPopulate(game)
+    basicPopulate(game)
     while possibilities:
         hiddenPopulate(game)
-        pairPopulate(game)
+        basicPopulate(game)
+        if not possibilities:
+            break
+        pairPossibility(game)
+        basicPopulate(game)
     return game
 
 
@@ -53,13 +57,13 @@ def basicPopulate(game):
     delete = [] #chaves a serem deletadas, pois a possibilidade foi preenchida
     for key in possibilities:
         if len(possibilities[key]) == 1:
-            delete.append(key)
             game[key[0]][key[1]] = possibilities[key][0]
+            delete.append(key)
     for key in delete:
         possibilities.pop(key, None)
     #populatePossibilities(game)
             
-def pairPopulate(game):
+def pairPossibility(game):
     '''
     Reduz o espectro de possibilidades baseado
     na verificação de pares:
@@ -85,7 +89,6 @@ def pairPopulate(game):
                                 possibilities[coord].remove(duo[0]) 
                             if duo[1] in possibilities[coord]:
                                 possibilities[coord].remove(duo[1])     
-    basicPopulate(game)
 
 def hasMultiplePairs(square,duo):
     '''
@@ -123,4 +126,5 @@ def hiddenPopulate(game):
                     if (x,y) in possibilities:
                         if i in possibilities[(x,y)]:
                             game[x][y] = i
+                            break
     populatePossibilities(game)
